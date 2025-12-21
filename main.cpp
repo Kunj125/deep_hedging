@@ -1,7 +1,7 @@
 #include <iostream>
-#include <cmath>
 #include <random>
-#include <algorithm>
+#include <vector>
+#include "Engine.h"
 
 using namespace std;
 
@@ -12,35 +12,20 @@ int main()
     double r = 0.05;
     double sigma = 0.2;
     double T = 1.0;
+    int steps = 100;
     int N = 100000;
 
     // rng
-    std::random_device rd;
+    random_device rd;
+    mt19937 generator(rd());
+    normal_distribution<double> distribution(0.0, 1.0);
 
-    std::mt19937 generator(rd());
-
-    std::normal_distribution<double> distribution(0.0, 1.0);
-
-    double sum_payoffs = 0.0;
-
-    for (int i = 0; i < N; ++i)
+    for (int i = 0; i < 5; ++i)
     {
-        double Z = distribution(generator);
+        vector<double> path = generate_path(S0, r, sigma, T, steps, generator);
 
-        double S_T = S0 * exp((r - 0.5 * sigma * sigma) * T + sigma * sqrt(T) * Z);
-
-        double payoff = std::max(S_T - K, 0.0);
-
-        sum_payoffs += payoff;
+        cout << "Path " << i + 1 << " Final Price: " << path.back() << endl;
     }
-
-    double average_payoff = sum_payoffs / N;
-    double option_price = exp(-r * T) * average_payoff;
-
-    cout << "Number of Paths: " << N << endl;
-    cout << "Underlying:      " << S0 << endl;
-    cout << "Strike:          " << K << endl;
-    cout << "Option Price:    " << option_price << endl;
 
     return 0;
 }
