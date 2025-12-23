@@ -77,19 +77,31 @@ class TradingEnvironment:
 
 
 class HedgingNetwork(nn.Module):
-    def __init__(self):
-        super().__init__()
-        # input: 3 neurons (log_price, time_left, current_holdings)
-        # hidden: 32 neurons
-        # output: 1 neuron (target delta)
-        self.model = nn.Sequential(
-            nn.Linear(3, 32),
-            nn.ReLU(),
-            nn.Linear(32, 32),
-            nn.ReLU(),
-            nn.Linear(32, 1),
-            nn.Sigmoid()
-        )
+    def __init__(self, input_dim=3, hidden_dim=64):
+        super(HedgingNetwork, self).__init__()
+        
+        self.layer1 = nn.Linear(input_dim, hidden_dim)
+        self.act1 = nn.ReLU()
+        
+        self.layer2 = nn.Linear(hidden_dim, hidden_dim)
+        self.act2 = nn.ReLU()
 
-    def forward(self, state):
-        return self.model(state)
+        self.layer3 = nn.Linear(hidden_dim, hidden_dim)
+        self.act3 = nn.ReLU()
+        
+        self.output_layer = nn.Linear(hidden_dim, 1)
+        self.final_act = nn.Sigmoid()
+
+    def forward(self, x):
+        x = self.layer1(x)
+        x = self.act1(x)
+        
+        x = self.layer2(x)
+        x = self.act2(x)
+
+        x = self.layer3(x)
+        x = self.act3(x)
+        
+        x = self.output_layer(x)
+        x = self.final_act(x)
+        return x
