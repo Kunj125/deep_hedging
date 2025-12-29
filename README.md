@@ -6,6 +6,8 @@ The agent optimises for **95% Expected Shortfall (CVaR)** to explicitly minimise
 
 **Results:** The model (trained purely on simulation) was backtested on **S&P 500** data during the March 2020 crash. This model reduced total hedging losses by approximately **25%** compared to the standard Black-Scholes model.
 
+![Backtest Results](backtest_results.png)
+
 **Future work:**
 
 * GANs: Replace Heston with GANs to learn model-free market dynamics directly from data.

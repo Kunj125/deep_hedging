@@ -105,6 +105,7 @@ def run_covid_backtest():
     plt.legend()
     
     plt.tight_layout()
+    plt.savefig("backtest_results.png")
     plt.show()
 
 if __name__ == "__main__":
